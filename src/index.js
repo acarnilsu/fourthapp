@@ -6,9 +6,12 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // development modda yani geliştirme yaparken react tarafında kontrolü yazım denetimi yapmak hataları minimuma indirmek için kullanılan bir yöntem
+  // production mode da çalışmıyor.
+  // development modda açık olan bu element yüzünden component içerisindeki useEffect 2 kez tetikleniyor.
+  //<React.StrictMode>
     <App />
-  </React.StrictMode>
+  //</React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
