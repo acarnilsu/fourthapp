@@ -10,7 +10,7 @@ function User() {
       //yapılacak işlemler
       //component ilk init olduğunda api işlemleri useEffect [] olanında yapalım
 
-      //1.YÖNTEM
+      //1.YÖNTEM (promise yöntemi)
       fetch('https://jsonplaceholder.typicode.com/users')
       .then((response) => {
         console.log("f-response",response);
@@ -20,13 +20,27 @@ function User() {
         console.log("data", data);
       });
     
-      //2.YÖNTEM
+      //2.YÖNTEM 
       axios.get('https://jsonplaceholder.typicode.com/users').then
       ((response) => {
         console.log("response", "data", response, response.data);
         setUsers([...response.data]);
+      }).catch(err => {
+        console.log('err', err);
       });
       
+
+    // 3.YÖNTEM (async await yöntemi)
+    // async function içerisinde de await keyword ile axios kullanabiliriz. (fetch de de uygulanaır) async await yöntemi
+    const asyncFunc = async () => {
+      try {
+        let res = await axios.get("https://jsonplaceholder.typicode.com/users");
+      } catch (error) {
+        console.log("netoworkerr", error);
+      }
+    };
+
+
       return () => {
         //clean up işlemi
         //yani useEffect Domdan kalkınca burası tetikleniyor
