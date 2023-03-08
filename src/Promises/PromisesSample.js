@@ -86,7 +86,7 @@ export default function PromiseSample() {
 
 
       // Self Invoked Function
-  (async function () {
+    (async function () {
     // anonymous isimsiz function çalıştırdık
     try {
       // hata yoksa bu blok çalışacak

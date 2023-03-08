@@ -10,6 +10,11 @@ function User() {
       //yapılacak işlemler
       //component ilk init olduğunda api işlemleri useEffect [] olanında yapalım
 
+    var c = new AbortController();
+
+    console.log("component doma yüklendi 1 kez çalıştı");
+    // sayfa ilk açılışın da eğer sayfaya api dan veri çekmek istersek [] no dependcy olcak şekilde yazmalıydık
+
       //1.YÖNTEM (promise yöntemi)
       fetch('https://jsonplaceholder.typicode.com/users')
       .then((response) => {
@@ -21,7 +26,9 @@ function User() {
       });
     
       //2.YÖNTEM 
-      axios.get('https://jsonplaceholder.typicode.com/users').then
+      //axios içerisine abordedController ile gönderdiğimiz signal değeri üzerinden istek bitince axios kendisi 
+      //memory tüketimi olmasın diye istek sonunda işlemi iptal ediyor
+      axios.get('https://jsonplaceholder.typicode.com/users', {signal:c.signal}).then
       ((response) => {
         console.log("response", "data", response, response.data);
         setUsers([...response.data]);
@@ -41,10 +48,18 @@ function User() {
     };
 
 
+    asyncFunc(); //isimden çalıştırma yaptık
+
       return () => {
-        //clean up işlemi
-        //yani useEffect Domdan kalkınca burası tetikleniyor
-      }
+      // anonymous çalışan bir function var
+      // clean up işlemi
+      // yani useEffect domdan kalkınca burası çalışıyor.
+      console.log("component domdan kalktı");
+      // http kanalına yapılan istekleri kaldırmamız lazım
+      // yoksa tarayı fazladan memory hafıza tüketir.
+      // axios ile istek atılmadığında bu signal değerini kendimiz abort method sonlandırmalıyız. bunuda clean up işleminde yapmalıyız.
+      c.abort(); // api istek işlemini bitir kes. buda performans sağlıyor.
+      };
     }, []); //deps kısmı
     
 
